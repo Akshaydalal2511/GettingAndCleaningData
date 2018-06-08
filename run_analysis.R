@@ -51,4 +51,5 @@ mergedData <- mutate(mergedData,Activity = mapvalues(mergedData$Activity,activit
 tidyData <- mergedData %>% group_by(SubjectID,Activity) %>%
   summarise_all(funs(mean))
 
-View(tidyData)
+## Writing tidy Data as a text file
+write.table(tidyData,file = "tidyData.txt",row.names = FALSE)
