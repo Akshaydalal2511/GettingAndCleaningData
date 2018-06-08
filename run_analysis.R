@@ -1,7 +1,6 @@
-setwd("C:/Users/Sanket/Desktop/Akshay/Coursera/Getting and Cleaning Data/Getting and Cleaning Data Course Project")
 library(dplyr)
+library(plyr)
 library(data.table)
-
 
 ## Loading the text files as table into variables
 activityLabels <- read.table("./UCI HAR Dataset/activity_labels.txt")
@@ -45,11 +44,12 @@ colnames(activityCode) <- "Activity"
 mergedData <- cbind(subjectID,activityCode,featuresData)
 
 ## Replacing the activity codes with their lables
-mergedData <- mutate(mergedData,Activity = mapvalues(mergedData$Activity,activityLabels$V1,as.character(activityLabels$V2)))
+mergedData <- mutate(mergedData,Activity = mapvalues(mergedData$Activity,activityLabels$V1,activityLabels$V2))
 
 ## Summerizing the feature means on basis of SubjectID's and Activity
 tidyData <- mergedData %>% group_by(SubjectID,Activity) %>%
   summarise_all(funs(mean))
 
 ## Writing tidy Data as a text file
-write.table(tidyData,file = "tidyData.txt",row.names = FALSE)
+write.table(tidyData,file = "tidyData.txt",row.names = FALSE,col.names = TRUE)
+View(tidyData)
